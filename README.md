@@ -46,6 +46,12 @@ uv run xlerobot-servo-mcp \
   --camera-index-or-path 0
 ```
 
+On Linux, the project now resolves PyTorch from the CPU-only index by default, so `uv sync --extra hardware` will not pull in NVIDIA CUDA packages on AMD or CPU-only machines. If you do want the default PyPI-backed Linux wheels instead, use:
+
+```bash
+uv sync --extra hardware --no-sources
+```
+
 Add the left-arm + head bus later when you're ready:
 
 ```bash

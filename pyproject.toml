@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "xlerobot-servo-mcp"
+name = "xlerobot-mcp"
 version = "0.1.0"
 description = "MCP server that exposes XLeRobot servo controls to AI clients."
 readme = "README.md"
@@ -23,6 +23,7 @@ hardware = [
 ]
 
 [project.scripts]
+xlerobot-mcp = "xlerobot_mcp.cli:main"
 xlerobot-servo-mcp = "xlerobot_mcp.cli:main"
 
 [tool.uv.sources]

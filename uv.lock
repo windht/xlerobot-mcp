@@ -3160,7 +3160,7 @@ wheels = [
 ]
 
 [[package]]
-name = "xlerobot-servo-mcp"
+name = "xlerobot-mcp"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

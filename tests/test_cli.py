@@ -1,8 +1,11 @@
 import argparse
+import sys
 from pathlib import Path
 
+import pytest
+
 from xlerobot_mcp.camera import MockCameraProvider
-from xlerobot_mcp.cli import _format_startup_message
+from xlerobot_mcp.cli import _format_startup_message, build_parser
 from xlerobot_mcp.controllers import MockServoController
 
 
@@ -52,3 +55,12 @@ def test_startup_message_for_streamable_http(tmp_path: Path) -> None:
 
     assert "http://127.0.0.1:8876/mcp" in message
     assert "transport=streamable-http" in message
+
+
+@pytest.mark.parametrize("argv0", ["xlerobot-mcp", "xlerobot-servo-mcp"])
+def test_parser_uses_invoked_program_name(monkeypatch: pytest.MonkeyPatch, argv0: str) -> None:
+    monkeypatch.setattr(sys, "argv", [argv0])
+
+    parser = build_parser()
+
+    assert parser.prog == argv0

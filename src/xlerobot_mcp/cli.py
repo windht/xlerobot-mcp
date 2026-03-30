@@ -28,7 +28,6 @@ def _env_bool(name: str, default: bool) -> bool:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="xlerobot-servo-mcp",
         description="Expose XLeRobot servo controls through MCP.",
     )
     parser.add_argument(

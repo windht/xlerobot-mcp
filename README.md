@@ -10,6 +10,20 @@ This server stays close to the upstream `ServoControler` API, but adds:
 - a `get_robot_state` tool and `robot://state` resource for structured state
 - both `stdio` and `streamable-http` transports
 
+## TL;DR
+
+Install `uv`, then start the mock server instantly without cloning the repo:
+
+```bash
+uvx xlerobot-mcp --backend mock
+```
+
+For Codex:
+
+```bash
+codex mcp add xlerobot -- uvx xlerobot-mcp --backend mock
+```
+
 ## What It Exposes
 
 The server wraps the same control areas as the upstream RoboCrew module:
@@ -27,10 +41,18 @@ Use Python 3.11+.
 
 ```bash
 uv sync
-uv run xlerobot-servo-mcp --backend mock
+uv run xlerobot-mcp --backend mock
 ```
 
 That starts a `stdio` MCP server in mock mode, which is the easiest way to connect from Codex, Claude Desktop, Cursor, Goose, or any other client that launches MCP servers as subprocesses.
+
+Once the package is published to PyPI, users can skip cloning the repo and run it directly with `uvx`:
+
+```bash
+uvx xlerobot-mcp --backend mock
+```
+
+The shorter `xlerobot-mcp` command is the primary entrypoint. The original `xlerobot-servo-mcp` command remains available as a compatibility alias.
 
 ## Hardware Mode
 
@@ -40,7 +62,7 @@ For the first round of testing, the right-arm + wheel bus is enough:
 
 ```bash
 uv sync --extra hardware
-uv run xlerobot-servo-mcp \
+uv run xlerobot-mcp \
   --backend hardware \
   --right-arm-wheel-usb /dev/ttyUSB0 \
   --camera-index-or-path 0
@@ -55,7 +77,7 @@ uv sync --extra hardware --no-sources
 Add the left-arm + head bus later when you're ready:
 
 ```bash
-uv run xlerobot-servo-mcp \
+uv run xlerobot-mcp \
   --backend hardware \
   --right-arm-wheel-usb /dev/ttyUSB0 \
   --left-arm-head-usb /dev/ttyUSB1 \
@@ -75,7 +97,7 @@ RoboCrew feeds current camera frames back into the agent loop, and this server n
 For a live camera:
 
 ```bash
-uv run xlerobot-servo-mcp \
+uv run xlerobot-mcp \
   --backend hardware \
   --right-arm-wheel-usb /dev/ttyUSB0 \
   --camera-index-or-path 0
@@ -84,7 +106,7 @@ uv run xlerobot-servo-mcp \
 For mock visual testing with a fixed image:
 
 ```bash
-uv run xlerobot-servo-mcp \
+uv run xlerobot-mcp \
   --backend mock \
   --camera-mock-image /absolute/path/to/test-frame.jpg
 ```
@@ -100,7 +122,7 @@ The tool returns:
 If your client prefers a URL-based MCP server instead of `stdio`, run:
 
 ```bash
-uv run xlerobot-servo-mcp \
+uv run xlerobot-mcp \
   --backend mock \
   --transport streamable-http \
   --host 127.0.0.1 \
@@ -134,12 +156,42 @@ CLI flags can also be provided with environment variables:
 - `XLEROBOT_PORT=8765`
 - `XLEROBOT_STREAMABLE_HTTP_PATH=/mcp`
 
+## Publishing
+
+Build the distributions the same way your users will consume them from PyPI:
+
+```bash
+uv build --no-sources
+```
+
+Then publish with a PyPI token:
+
+```bash
+uv publish
+```
+
+This repository also includes [`.github/workflows/publish.yml`](/Users/windht/Dev/xlerobot-control/.github/workflows/publish.yml), which publishes automatically when you push a version tag like `v0.1.0`.
+
+If you need to cut another release, bump the version first, for example:
+
+```bash
+uv version patch
+```
+
 ## Codex Example
+
+After publishing:
+
+```bash
+codex mcp add xlerobot -- uvx xlerobot-mcp --backend mock
+```
+
+From a local checkout before publishing:
 
 ```bash
 codex mcp add xlerobot -- \
   uv run --directory /Users/windht/Dev/xlerobot-control \
-  xlerobot-servo-mcp \
+  xlerobot-mcp \
   --backend mock
 ```
 

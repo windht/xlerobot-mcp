@@ -18,6 +18,16 @@ Install `uv`, then start the mock server instantly without cloning the repo:
 uvx xlerobot-mcp --backend mock
 ```
 
+Run hardware mode the same way (CPU-only torch wheels):
+
+```bash
+uvx --from "xlerobot-mcp[hardware]" --torch-backend cpu \
+  xlerobot-mcp \
+  --backend hardware \
+  --right-arm-wheel-usb /dev/ttyUSB0 \
+  --camera-index-or-path 0
+```
+
 For Codex:
 
 ```bash
@@ -52,6 +62,16 @@ Once the package is published to PyPI, users can skip cloning the repo and run i
 uvx xlerobot-mcp --backend mock
 ```
 
+For real servo control from PyPI, include the hardware extra and force CPU-only torch resolution:
+
+```bash
+uvx --from "xlerobot-mcp[hardware]" --torch-backend cpu \
+  xlerobot-mcp \
+  --backend hardware \
+  --right-arm-wheel-usb /dev/ttyUSB0 \
+  --camera-index-or-path 0
+```
+
 The shorter `xlerobot-mcp` command is the primary entrypoint. The original `xlerobot-servo-mcp` command remains available as a compatibility alias.
 
 ## Hardware Mode
@@ -68,7 +88,7 @@ uv run xlerobot-mcp \
   --camera-index-or-path 0
 ```
 
-On Linux, the project now resolves PyTorch from the CPU-only index by default, so `uv sync --extra hardware` will not pull in NVIDIA CUDA packages on AMD or CPU-only machines. If you do want the default PyPI-backed Linux wheels instead, use:
+The project resolves PyTorch from the CPU-only index by default on all platforms, so `uv sync --extra hardware` will not pull NVIDIA CUDA bundles. If you do want the default PyPI-backed wheels instead, use:
 
 ```bash
 uv sync --extra hardware --no-sources
@@ -184,6 +204,17 @@ After publishing:
 
 ```bash
 codex mcp add xlerobot -- uvx xlerobot-mcp --backend mock
+```
+
+Hardware mode via `uvx`:
+
+```bash
+codex mcp add xlerobot -- \
+  uvx --from "xlerobot-mcp[hardware]" --torch-backend cpu \
+  xlerobot-mcp \
+  --backend hardware \
+  --right-arm-wheel-usb /dev/ttyUSB0 \
+  --camera-index-or-path 0
 ```
 
 From a local checkout before publishing:

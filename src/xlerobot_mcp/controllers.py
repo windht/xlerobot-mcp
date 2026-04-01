@@ -205,7 +205,9 @@ def _import_lerobot() -> Dict[str, Any]:
     except ImportError as exc:  # pragma: no cover - exercised only without dependency
         raise HardwareDependencyError(
             "The 'lerobot' package is required for --backend hardware. "
-            "Install it with `uv sync --extra hardware` or `pip install 'lerobot[feetech]'`."
+            "Install it with `uv sync --extra hardware`, run via "
+            "`uvx --from \"xlerobot-mcp[hardware]\" --torch-backend cpu xlerobot-mcp --backend hardware ...`, "
+            "or install manually with `pip install 'lerobot[feetech]'`."
         ) from exc
 
     try:
@@ -213,7 +215,9 @@ def _import_lerobot() -> Dict[str, Any]:
     except ImportError as exc:  # pragma: no cover - exercised only without dependency
         raise HardwareDependencyError(
             "The Feetech servo SDK is missing: Python module 'scservo_sdk' not found. "
-            "Re-run `uv sync --extra hardware` so the `lerobot[feetech]` dependency is installed. "
+            "Re-run `uv sync --extra hardware` (or use "
+            "`uvx --from \"xlerobot-mcp[hardware]\" --torch-backend cpu ...`) "
+            "so the `lerobot[feetech]` dependency is installed. "
             "If you manage packages manually, install `feetech-servo-sdk`."
         ) from exc
 

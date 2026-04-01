@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "xlerobot-mcp"
-version = "0.1.0"
+version = "0.1.1"
 description = "MCP server that exposes XLeRobot servo controls to AI clients."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -27,8 +27,8 @@ xlerobot-mcp = "xlerobot_mcp.cli:main"
 xlerobot-servo-mcp = "xlerobot_mcp.cli:main"
 
 [tool.uv.sources]
-torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
-torchvision = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+torch = [{ index = "pytorch-cpu" }]
+torchvision = [{ index = "pytorch-cpu" }]
 
 [[tool.uv.index]]
 name = "pytorch-cpu"
